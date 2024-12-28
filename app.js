@@ -3,13 +3,15 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose')
 const app = express();
-const axois = require('axios').default
+const axios = require('axios').default
 
 const userRoute = require('./routes/user');
 const compilerRoute = require('./routes/compiler');
 
 
-app.use(cors())
+app.use(cors({
+origin: 'http://localhost:4200'  // Replace with your frontend URL
+}));
 app.use(express.json())
 
 app.use('/users', userRoute)
@@ -24,7 +26,7 @@ let reqObj = req.body
 reqObj['clientId'	] = process.env.CLIENT_ID;
 reqObj['clientSecret'] = process.env.CLIENT_SECRET;
 
-axois.post('https://api.jdoodle.com/v1/execute', reqObj).then((resp)=>{
+axios.post('https://api.jdoodle.com/v1/execute', reqObj).then((resp)=>{
   res.json({error: false, response: resp.data})
 }).catch((err)=>{
   console.log(err)
