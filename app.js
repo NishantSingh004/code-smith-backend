@@ -8,15 +8,24 @@ const axios = require('axios').default
 const userRoute = require('./routes/user');
 const compilerRoute = require('./routes/compiler');
 
+const allowedOrigins = ['https://codesmith-online.netlify.app', 'http://localhost:4200'];
+
 const corsOptions = {
-  origin: ['https://codesmith-online.netlify.app'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
-  allowedHeaders: ['Content-Type', 'Authorization'],   
-  credentials: true,                                
+  origin: (origin, callback) => {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); 
+ 
 
 
 app.use(express.json())
