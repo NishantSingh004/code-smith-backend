@@ -5,7 +5,6 @@ const { v4: uuidv4 } = require('uuid');
 
 const userModel = require('../models/user')
 
-
 router.post('/', (req, res)=>{
 let userObj = req.body;
 userObj.password = Cryptojs.AES.encrypt(userObj.password, '1234567').toString();
